@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html>
-  
   <head>
-    <script src="https://cdn.jsdelivr.net/npm/bip39/dist/bip39.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ethereumjs-wallet/dist/ethereumjs-wallet.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ethereumjs-util/dist/ethereumjs-util.min.js"></script>
-
-    <title>ETH Mnemonic to Private Key Converter</title>
+    <meta charset="UTF-8">
+    <title>Mnemonic to Private Key</title>
     <style>
       body {
         background-color: #F5F5F5;
@@ -28,79 +24,27 @@
         border-radius: 10px;
         box-shadow: 0px 0px 10px #888888;
       }
-      label {
-        display: block;
+      p {
         margin-bottom: 10px;
-      }
-      input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border: none;
-        border-radius: 5px;
-        box-shadow: 0px 0px 5px #888888;
-      }
-      button {
-        background-color: #2E8B57;
-        color: #FFFFFF;
-        border: none;
-        border-radius: 5px;
-        padding: 10px 20px;
-        cursor: pointer;
-      }
-      button:hover {
-        background-color: #3CB371;
-      }
-      #output {
-        margin-top: 20px;
-        padding: 10px;
-        background-color: #FFFFFF;
-        border-radius: 5px;
-        box-shadow: 0px 0px 5px #888888;
-        display: none;
-      }
-      #output h2 {
-        margin-top: 0;
-      }
-      #output label {
-        font-weight: bold;
-      }
-      #output p {
-        margin: 0;
       }
     </style>
   </head>
   <body>
     <div id="header">
-      <h1>ETH Mnemonic to Private Key Converter</h1>
+      <h1>Mnemonic to Private Key - TheAnonHackUk</h1>
     </div>
     <div id="content">
-      <label for="mnemonic">Enter your mnemonic phrase:</label>
-      <input type="text" id="mnemonic" placeholder="e.g. abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about">
-      <button onclick="convert()">Convert</button>
-      <div id="output">
-        <h2>Result</h2>
-        <label for="private-key">Private Key:</label>
-        <p id="private-key"></p>
-      </div>
+      <p>A mnemonic phrase is a sequence of words that represent a private key in a human-readable format. Mnemonic phrases are typically used in cryptocurrency wallets to provide a more user-friendly way of storing and recovering private keys.</p>
+      <p>The process of converting a mnemonic phrase to a private key involves several steps:</p>
+      <ol>
+        <li>Derive a seed from the mnemonic phrase using a hashing algorithm called PBKDF2.</li>
+        <li>Use the seed to generate a master private key and a master chain code.</li>
+        <li>Derive a hierarchical deterministic (HD) wallet from the master private key and master chain code.</li>
+        <li>Derive a child key from the HD wallet using a path that specifies the account, chain, and index.</li>
+        <li>Use the child key to generate a private key.</li>
+      </ol>
+      <p>While this process may seem complex, it is handled automatically by most cryptocurrency wallets that support mnemonic phrases. Users simply need to enter their mnemonic phrase and the wallet software takes care of the rest.</p>
+      <p>Check <a href="https://github.com/theanonhackuk/Mnemonic-to-PrivateKey-Database">Mnemonic to privatekey database</a></p>
     </div>
-    <script>
-      
-      function convert() {
-        var mnemonic = document.getElementById("mnemonic").value.trim();
-        var privateKey = getPrivateKey(mnemonic);
-        document.getElementById("private-key").textContent = privateKey;
-        document.getElementById("output").style.display = "block";
-      }
-
-      function getPrivateKey(mnemonic) {
-        const seed = bip39.mnemonicToSeedSync(mnemonic);
-        const hdwallet = hdkey.fromMasterSeed(seed);
-        const wallet = hdwallet.derivePath("m/44'/60'/0'/0/0").getWallet();
-        const privateKey = wallet.getPrivateKeyString();
-        return privateKey;
-      }
-
-    </script>
   </body>
 </html>
