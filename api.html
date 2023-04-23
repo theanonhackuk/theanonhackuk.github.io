@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <div id="priceContainer">
+
+      <p id="btcPrice"></p>
+
+      <p id="ethPrice"></p>
+
+    </div>
+
+    <canvas id="priceChart" width="400" height="400"></canvas>
+
+    <script>
+
+      // Fetch the current price of Bitcoin (BTC)
+
+      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd")
+
+        .then(function(response) {
+
+document.querySelector("#btcPrice").innerHTML = `BTC Price: $${response.data.bitcoin.usd}`;
+
+        })
+
+        .catch(function(error) {
+
+          console.error(error);
+
+        });
+
+      
+
+      // Fetch the current price of Ethereum (ETH)
+
+      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd")
+
+        .then(function(response) {
+
+          document.querySelector("#ethPrice").innerHTML = `ETH Price: $${response.data.ethereum.usd}`;
+
+        })
+
+        .catch(function(error) {
+
+          console.error(error);
+
+        });
+     
+
+  </script>
+
+</body>
+
+</html>
+
