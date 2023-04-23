@@ -1,50 +1,152 @@
 <!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="UTF-8">
-    <title>Mnemonic to Private Key</title>
-    <style>
-      body {
-        background-color: #F5F5F5;
-        font-family: Arial, sans-serif;
-      }
-      #header {
-        background-color: #2E8B57;
-        color: #FFFFFF;
-        padding: 20px;
-        text-align: center;
-      }
-      h1 {
-        margin: 0;
-      }
-      #content {
-        margin: 20px;
-        padding: 20px;
-        background-color: #FFFFFF;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px #888888;
-      }
-      p {
-        margin-bottom: 10px;
-      }
-    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
   </head>
+
   <body>
-    <div id="header">
-      <h1>Mnemonic to Private Key - TheAnonHackUk</h1>
+
+    <div id="priceContainer">
+
+      <p id="btcPrice"></p>
+
+      <p id="ethPrice"></p>
+
     </div>
-    <div id="content">
-      <p>A mnemonic phrase is a sequence of words that represent a private key in a human-readable format. Mnemonic phrases are typically used in cryptocurrency wallets to provide a more user-friendly way of storing and recovering private keys.</p>
-      <p>The process of converting a mnemonic phrase to a private key involves several steps:</p>
-      <ol>
-        <li>Derive a seed from the mnemonic phrase using a hashing algorithm called PBKDF2.</li>
-        <li>Use the seed to generate a master private key and a master chain code.</li>
-        <li>Derive a hierarchical deterministic (HD) wallet from the master private key and master chain code.</li>
-        <li>Derive a child key from the HD wallet using a path that specifies the account, chain, and index.</li>
-        <li>Use the child key to generate a private key.</li>
-      </ol>
-      <p>While this process may seem complex, it is handled automatically by most cryptocurrency wallets that support mnemonic phrases. Users simply need to enter their mnemonic phrase and the wallet software takes care of the rest.</p>
-      <p>Check <a href="https://github.com/theanonhackuk/Mnemonic-to-PrivateKey-Database">Mnemonic to privatekey database</a></p>
-    </div>
-  </body>
+
+    <canvas id="priceChart" width="400" height="400"></canvas>
+
+    <script>
+
+      // Fetch the current price of Bitcoin (BTC)
+
+      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd")
+
+        .then(function(response) {
+
+document.querySelector("#btcPrice").innerHTML = `BTC Price: $${response.data.bitcoin.usd}`;
+
+        })
+
+        .catch(function(error) {
+
+          console.error(error);
+
+        });
+
+      
+
+      // Fetch the current price of Ethereum (ETH)
+
+      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd")
+
+        .then(function(response) {
+
+          document.querySelector("#ethPrice").innerHTML = `ETH Price: $${response.data.ethereum.usd}`;
+
+        })
+
+        .catch(function(error) {
+
+          console.error(error);
+
+        });
+
+      
+
+      // Compare the prices of Bitcoin (BTC) and Ethereum (ETH) in a chart
+
+      const priceChart = new Chart(document.getElementById("priceChart"), {
+
+        type: "bar",
+
+        data: {
+
+          labels: ["BTC", "ETH"],
+
+          datasets: [{
+
+            label: "Price (USD)",
+
+            data: [],
+
+            backgroundColor: [
+
+              "rgba(255, 99, 132, 0.2)",
+
+              "rgba(54, 162, 235, 0.2)"
+
+            ],
+
+            borderColor: [
+
+              "rgba(255, 99, 132, 1)",
+
+              "rgba(54, 162, 235, 1)"
+
+            ],
+
+            borderWidth: 1
+
+          }]
+
+        },
+
+        options: {
+
+          scales: {
+
+            yAxes: [{
+
+              ticks: {
+
+                beginAtZero: true
+
+              }
+
+            }]
+
+          }
+
+        }
+
+      });
+
+      
+
+      // Update the chart data when the price of Bitcoin (BTC) and Ethereum (ETH) is fetched
+    // Update the chart data when the price of Bitcoin (BTC) and Ethereum (ETH) is fetched
+
+    const updateChartData = function() {
+
+      if (priceChart.data.datasets[0].data.length === 2) {
+
+        priceChart.update();
+
+      } else {
+
+        priceChart.data.datasets[0].data.push(parseFloat(document.querySelector("#btcPrice").textContent.split("$")[1]));
+
+        priceChart.data.datasets[0].data.push(parseFloat(document.querySelector("#ethPrice").textContent.split("$")[1]));
+
+        priceChart.update();
+
+      }
+
+    };
+
+    
+
+    setInterval(updateChartData, 1000);
+
+  </script>
+
+</body>
+
 </html>
+
