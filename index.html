@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ETH Mnemonic to Private Key Converter</title>
+    <style>
+      body {
+        background-color: #F5F5F5;
+        font-family: Arial, sans-serif;
+      }
+      #header {
+        background-color: #2E8B57;
+        color: #FFFFFF;
+        padding: 20px;
+        text-align: center;
+      }
+      h1 {
+        margin: 0;
+      }
+      #content {
+        margin: 20px;
+        padding: 20px;
+        background-color: #FFFFFF;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px #888888;
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 0px 5px #888888;
+      }
+      button {
+        background-color: #2E8B57;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #3CB371;
+      }
+      #output {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #FFFFFF;
+        border-radius: 5px;
+        box-shadow: 0px 0px 5px #888888;
+        display: none;
+      }
+      #output h2 {
+        margin-top: 0;
+      }
+      #output label {
+        font-weight: bold;
+      }
+      #output p {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <h1>ETH Mnemonic to Private Key Converter</h1>
+    </div>
+    <div id="content">
+      <label for="mnemonic">Enter your mnemonic phrase:</label>
+      <input type="text" id="mnemonic" placeholder="e.g. abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about">
+      <button onclick="convert()">Convert</button>
+      <div id="output">
+        <h2>Result</h2>
+        <label for="private-key">Private Key:</label>
+        <p id="private-key"></p>
+      </div>
+    </div>
+    <script>
+      function convert() {
+        var mnemonic = document.getElementById("mnemonic").value.trim();
+        var privateKey = getPrivateKey(mnemonic);
+        document.getElementById("private-key").textContent = privateKey;
+        document.getElementById("output").style.display = "block";
+      }
+
+      function getPrivateKey(mnemonic) {
+        // implementation of BIP39 to convert mnemonic to private key
+        // ...
+        return "0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
+      }
+    </script>
+  </body>
+</html>
