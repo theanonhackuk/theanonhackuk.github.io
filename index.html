@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
+  
   <head>
+    <script src="https://cdn.jsdelivr.net/npm/bip39/dist/bip39.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethereumjs-wallet/dist/ethereumjs-wallet.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethereumjs-util/dist/ethereumjs-util.min.js"></script>
+
     <title>ETH Mnemonic to Private Key Converter</title>
     <style>
       body {
@@ -80,6 +85,7 @@
       </div>
     </div>
     <script>
+      
       function convert() {
         var mnemonic = document.getElementById("mnemonic").value.trim();
         var privateKey = getPrivateKey(mnemonic);
@@ -87,25 +93,14 @@
         document.getElementById("output").style.display = "block";
       }
 
-
-      function web3_mnemonic_to_private(mnemonic) {
-        try {
-         if (typeof mnemonic != 'string') return {
-           result: false, error: 'Invalid Mnemonic'
-         }
-         const wallet = ethers.Wallet.fromMnemonic(mnemonic);
-         if (typeof wallet !== 'object') return {
-           result: false, error: 'Invalid Mnemonic'
-          }
-          if (!wallet.privateKey || wallet.privateKey == null
-          || !wallet.privateKey.includes('0x')) return {
-           result: false, error: 'Invalid Mnemonic'
-          }
-          return { result: true, data: wallet.privateKey }
-       } catch(err) {
-          return { result: false, error: err }
-       }
+      function getPrivateKey(mnemonic) {
+        const seed = bip39.mnemonicToSeedSync(mnemonic);
+        const hdwallet = hdkey.fromMasterSeed(seed);
+        const wallet = hdwallet.derivePath("m/44'/60'/0'/0/0").getWallet();
+        const privateKey = wallet.getPrivateKeyString();
+        return privateKey;
       }
+
     </script>
   </body>
 </html>
